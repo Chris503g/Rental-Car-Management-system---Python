@@ -1,0 +1,102 @@
+[
+   {
+      "car_id": 1,
+      "car_brand": "Toyota",
+      "car_model": "Camry",
+      "year": 2021,
+      "rental_price": 50,
+      "availability": true,
+      "fuel_type": "Petrol",
+      "transmission": "Automatic"
+   },
+   {
+      "car_id": 2,
+      "car_brand": "Honda",
+      "car_model": "Civic",
+      "year": 2020,
+      "rental_price": 45,
+      "availability": true,
+      "fuel_type": "Petrol",
+      "transmission": "Automatic"
+   },
+   {
+      "car_id": 3,
+      "car_brand": "BMW",
+      "car_model": "X5",
+      "year": 2020,
+      "rental_price": 100,
+      "availability": false,
+      "fuel_type": "Diesel",
+      "transmission": "Automatic"
+   },
+   {
+      "car_id": 4,
+      "car_brand": "Mercedes-Benz",
+      "car_model": "E-Class",
+      "year": 2019,
+      "rental_price": 120,
+      "availability": true,
+      "fuel_type": "Petrol",
+      "transmission": "Automatic"
+   },
+   {
+      "car_id": 5,
+      "car_brand": "Ford",
+      "car_model": "Mustang",
+      "year": 2022,
+      "rental_price": 150,
+      "availability": true,
+      "fuel_type": "Petrol",
+      "transmission": "Manual"
+   },
+   {
+      "car_id": 6,
+      "car_brand": "Toyota",
+      "car_model": "Camry",
+      "year": 2020,
+      "rental_price": 55,
+      "availability": true,
+      "fuel_type": "Hybrid",
+      "transmission": "Automatic"
+   },
+   {
+      "car_id": 7,
+      "car_brand": "Honda",
+      "car_model": "Civic",
+      "year": 2021,
+      "rental_price": 48,
+      "availability": false,
+      "fuel_type": "Petrol",
+      "transmission": "Manual"
+   },
+   {
+      "car_id": 8,
+      "car_brand": "Toyota",
+      "car_model": "Fortuner",
+      "year": 2021,
+      "rental_price": 65,
+      "availability": true,
+      "fuel_type": "Diesel",
+      "transmission": "Automatic"
+   },
+   {
+      "car_id": 9,
+      "car_brand": "Toyota",
+      "car_model": "Fortuner",
+      "year": 2022,
+      "rental_price": 70,
+      "availability": false,
+      "fuel_type": "Diesel",
+      "transmission": "Automatic"
+   },
+   {
+      "car_id": 10,
+      "car_brand": "BMW",
+      "car_model": "X1",
+      "year": 2020,
+      "rental_price": 95,
+      "availability": true,
+      "fuel_type": "Diesel",
+      "transmission": "Automatic"
+   }
+]
