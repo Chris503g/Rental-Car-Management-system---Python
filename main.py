@@ -292,16 +292,13 @@ def delete_car():
                             print("\n\nCar successfully deleted")
                             show_list_of_cars()  # Show the updated list of cars
                             break
-                        elif user_confirmation == "2":
-                            print("Cancel deletion")
-                            return
-                        else:
-                            print("Invalid choice")
 
-                    break  # Exit the loop if the car is found
+                if not car_found:
+                    print("The data you are looking for does not exist")
+                break  # Exit the loop if the car is found or not found
 
-            if not car_found:
-                print("The data you are looking for does not exist")
+            else:
+                print("No cars to delete.")
 
         elif user_input == "2":
             return
