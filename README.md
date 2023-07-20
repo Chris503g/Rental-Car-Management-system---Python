@@ -45,4 +45,5 @@ The Rental Car Management System is a Python-based console application that allo
    git clone https://github.com/Chris503g/Rental-Car-Management-system---Python.git
 
 2. Run the Python script to start the application:
+   ```bash
    python rental_car_management.py
