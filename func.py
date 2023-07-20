@@ -25,9 +25,39 @@ def confirmation_page():
     return user_input
 
 
+##  GET USER INPUT
+def get_user_input(message, input_type=int):
+    while True:
+        try:
+            return input_type(input(message))
+        except ValueError:
+            print("Invalid input. Please enter a valid value.")
+
+
+## DISPLAY CAR DETAILS
+def display_car_details(cars):
+    if len(cars) == 0:
+        print("No cars to display.")
+        return
+
+    print("|", end="")
+    for key in cars[0].keys():
+        print(f"{key.upper(): <15}|", end="")
+    print()
+
+    for car in cars:
+        print("|", end="")
+        for value in car.values():
+            if isinstance(value, bool):  # Check if value is a boolean
+                value = str(value)  # Convert boolean to string
+            print(f"{value: <15}|", end="")
+        print()
+
+
 ## SHOW LIST OF CARS
 def show_list_of_cars():
     if len(rental_cars) != 0:
+        print("|", end="")
         for key in rental_cars[0].keys():
             print(f"{key.upper() :<15}|", end="")
         print()
@@ -43,92 +73,16 @@ def show_list_of_cars():
         print("No data in rental car")
 
 
+## SORTING BY KEY
+def sort_by_key(sort_key):
+    sorted_cars = sorted(rental_cars, key=lambda car: car[sort_key])
+    display_car_details(sorted_cars)
+
+
 ## SHOW ALL AVAILABLE & UNAVAIBALE CARS
 def show_available_cars(param):
     available_cars = [car for car in rental_cars if car["availability"] == param]
-    if available_cars:
-        print("|", end="")
-        for key in available_cars[0].keys():
-            print(f"{key.upper(): <15}|", end="")
-        print()
-
-        for car in available_cars:
-            print("|", end="")
-            for value in car.values():
-                if isinstance(value, bool):  # Check if value is a boolean
-                    value = str(value)  # Convert boolean to string
-                print(f"{value: <15}|", end="")
-            print()
-    else:
-        print("No available cars")
-
-
-## SORTING MENU
-def sorting():
-    while True:
-        print("==== SORTING MENU ====")
-        print(
-            """ 1. By Brand (A --> Z)
-                2. By Price
-                3. By Availability
-                4. Back to Menu
-                """
-        )
-        user_input = input("Enter your choice: ")
-        # SORT BY BRAND
-        if user_input == "1":
-            sort_by_key(user_input)
-
-        # SORT BY RENTAL PRICE
-        elif user_input == "2":
-            sort_by_key(user_input)
-
-        # SORT BY AVAILABILITY
-        elif user_input == "3":
-            print("==== SORT BY AVAILABILITY MENU ====")
-            print(
-                """
-                  1. Available
-                  2. Unavailable
-                  3. Back 
-                  """
-            )
-            avail_input = input("Enter your choice: ")
-            if avail_input == "1":
-                show_available_cars(True)
-            elif avail_input == "2":
-                show_available_cars(False)
-            else:
-                print("Invalid choice")
-        elif user_input == "4":
-            return
-        else:
-            print("Invalid choice")
-
-
-def sort_by_key(num):
-    # SORT BY BRAND
-    if num == "1":
-        sorted_cars = sorted(rental_cars, key=lambda car: car["car_brand"])
-    # SORT BY PRICE
-    elif num == "2":
-        sorted_cars = sorted(
-            rental_cars, key=lambda car: car["rental_price"], reverse=True
-        )
-
-    # Print the sorted cars
-    print("|", end="")
-    for key in sorted_cars[0].keys():
-        print(f"{key.upper(): <15}|", end="")
-    print()
-
-    for car in sorted_cars:
-        print("|", end="")
-        for value in car.values():
-            if isinstance(value, bool):  # Check if value is a boolean
-                value = str(value)  # Convert boolean to string
-            print(f"{value: <15}|", end="")
-        print()
+    display_car_details(available_cars)
 
 
 ## SCHEDULE MAINTENANCE FOR CARS
@@ -138,30 +92,13 @@ def schedule_maintenance():
         show_list_of_cars()
 
         # Get car ID
-        while True:
-            try:
-                car_id = int(input("Enter Car ID for maintenance: "))
-                break
-            except ValueError:
-                print("Invalid input. Please enter a valid car ID")
-
+        car_id = get_user_input("Enter car ID: ", input_type=int)
         car_found = False
 
         for car in rental_cars:
             if car["car_id"] == car_id:
                 car_found = True
-
-                print("|", end="")
-                for key in car.keys():
-                    print(f"{key: <15}|", end="")
-                print()
-                print("|", end="")
-
-                for value in car.values():
-                    if isinstance(value, bool):  # Check if value is a boolean
-                        value = str(value)  # Convert boolean to string
-                    print(f"{value: <15}|", end="")
-                print()
+                display_car_details([car])
 
                 # Schedule maintenance for the selected car
                 print("==== MAINTENANCE FORM ====")
@@ -224,3 +161,42 @@ def maintenance_menu():
         return
     else:
         print("Invalid choice")
+
+
+## SORTING MENU
+def sorting():
+    while True:
+        print("==== SORTING MENU ====")
+        print(
+            """ 
+                1. By Brand (A --> Z)
+                2. By Availability
+                3. Back to Menu
+                """
+        )
+        user_input = input("Enter your choice: ")
+        # SORT BY BRAND
+        if user_input == "1":
+            sort_by_key("car_brand")
+
+        # SORT BY AVAILABILITY
+        elif user_input == "2":
+            print("==== SORT BY AVAILABILITY MENU ====")
+            print(
+                """
+                  1. Available
+                  2. Unavailable
+                  3. Back 
+                  """
+            )
+            avail_input = input("Enter your choice: ")
+            if avail_input == "1":
+                show_available_cars(True)
+            elif avail_input == "2":
+                show_available_cars(False)
+            else:
+                print("Invalid choice")
+        elif user_input == "3":
+            return
+        else:
+            print("Invalid choice")

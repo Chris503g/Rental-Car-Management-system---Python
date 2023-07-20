@@ -6,18 +6,17 @@ def show_cars():
     while True:
         print("\t\t==== SHOW RENTAL CAR MENU ====")
         print(
-            """ List Menu:
+            """
               1. Show all Rental Cars
               2. Check a Rental Car 
               3. Back to Menu
               """
         )
-        user_input = input(" Please enter choice: ")
+        user_input = input("Enter your choice: ")
         # 1. SHOW ALL RENTAL CARS
         if user_input == "1":
             # CHECK IF rental_car data exist
             if len(rental_cars) != 0:
-                print("|", end="")
                 # Assuming all dictionaries have the same keys
                 show_list_of_cars()
             else:
@@ -26,24 +25,14 @@ def show_cars():
         # 2.SHOW A CAR BASED ON INDEX(PRIMARY KEY)
         elif user_input == "2":
             if len(rental_cars) != 0:  # check if rental_car data exist
-                car_id = int(input("Enter the car ID to check: "))
+                car_id = get_user_input("Enter car ID: ", input_type=int)
                 car_found = False  # Flag if car is found
 
                 for car in rental_cars:
                     if car["car_id"] == car_id:
                         car_found = True
                         print("\t\t==== CHECK RENTAL CAR ====")
-                        print("|", end="")
-                        for key in car.keys():
-                            print(f"{key: <15}|", end="")
-                        print()
-                        print("|", end="")
-
-                        for value in car.values():
-                            if isinstance(value, bool):  # Check if value is a boolean
-                                value = str(value)  # Convert boolean to string
-                            print(f"{value: <15}|", end="")
-                        print()
+                        display_car_details([car])
                         break  # Exit the loop if the car is found
 
                 if not car_found:
@@ -63,7 +52,7 @@ def create_car():
     while True:
         print("\t\t==== CREATE RENTAL CAR MENU ====")
         print(
-            """ List Menu:
+            """
               1. Create new Rental Car
               2. Back to Menu
               """
@@ -73,7 +62,7 @@ def create_car():
         if user_input == "1":
             print("==== Input Detail Mobil ====")
             while True:
-                car_id = int(input("Enter car ID: "))
+                car_id = get_user_input("Enter car ID: ", input_type=int)
                 car_exists = car_id in (car["car_id"] for car in rental_cars)
 
                 if car_exists:
@@ -124,17 +113,19 @@ def create_car():
                     }
 
                     # CONFIRMATION CREATE DATA
-                    user_confirmation = confirmation_page()
+                    while True:
+                        user_confirmation = confirmation_page()
 
-                    if user_confirmation == "1":
-                        rental_cars.append(new_car)
-                        print("Data successfully saved")
-                        show_list_of_cars()  # show new created car
-                        break  # Exit loop
-                    elif user_confirmation == "2":
-                        break
-                    else:
-                        print("Invalid Choice")
+                        if user_confirmation == "1":
+                            rental_cars.append(new_car)
+                            print("Data successfully saved")
+                            show_list_of_cars()  # show new created car
+                            break  # Exit loop
+                        elif user_confirmation == "2":
+                            break
+                        else:
+                            print("Invalid Choice")
+                break
 
         elif user_input == "2":
             return
@@ -147,7 +138,7 @@ def update_car():
     while True:
         print("\t\t==== UPDATE RENTAL CAR MENU ====")
         print(
-            """ List Menu:
+            """
                 1. Update Rental Car
                 2. Back to Menu
                 """
@@ -155,7 +146,7 @@ def update_car():
         user_input = input(" Please enter choice: ")
 
         if user_input == "1":
-            car_id = int(input("Enter Car ID to Update: "))
+            car_id = get_user_input("Enter car ID: ", input_type=int)
             car_found = False
 
             for car in rental_cars:
@@ -164,20 +155,14 @@ def update_car():
 
                     ## Display the rental car choosen
                     print("\t\t ==== RENTAL CAR ====")
-                    print("|", end="")
-                    for key in car.keys():
-                        print(f"{key: <15}|", end="")
-                    print()
-                    print("|", end="")
-
-                    for value in car.values():
-                        if isinstance(value, bool):  # Check if value is a boolean
-                            value = str(value)  # Convert boolean to string
-                        print(f"{value: <15}|", end="")
-                    print()
+                    display_car_details([car])
 
                     # CONFIRMATION UPDATE DATA
                     user_confirmation = confirmation_page()
+
+                    while user_confirmation not in ["1", "2"]:
+                        print("Invalid choice. Please enter 1 or 2.")
+                        user_confirmation = confirmation_page()
 
                     if user_confirmation == "1":
                         while True:
@@ -200,16 +185,45 @@ def update_car():
                                 car["car_brand"] = input("Enter updated car Brand: ")
                             elif user_input == "2":
                                 car["car_model"] = input("Enter updated car Model: ")
+
                             elif user_input == "3":
-                                car["year"] = input("Enter updated car Year: ")
+                                while True:
+                                    try:
+                                        car["year"] = int(
+                                            input("Enter updated car Year: ")
+                                        )
+                                        break  # Exit loop if the input is valid
+                                    except ValueError:
+                                        print("Please input the Year correctly.")
+
                             elif user_input == "4":
-                                car["rental_price"] = input(
-                                    "Enter updated car rental Price: "
-                                )
+                                while True:
+                                    try:
+                                        car["rental_price"] = float(
+                                            input("Enter Rental Price: ")
+                                        )
+                                        break
+                                    except ValueError:
+                                        print("Please input the price as a number.")
+
                             elif user_input == "5":
-                                car["availability"] = input(
-                                    "Enter updated car Availability: "
-                                )
+                                while True:
+                                    availability_input = (
+                                        input("Enter availability (True/False): ")
+                                        .lower()
+                                        .strip()
+                                    )
+                                    if availability_input == "true":
+                                        car["availability"] = True
+                                        break
+                                    elif availability_input == "false":
+                                        car["availability"] = False
+                                        break
+                                    else:
+                                        print(
+                                            "Please input availability as True or False"
+                                        )
+
                             elif user_input == "6":
                                 car["fuel_type"] = input(
                                     "Enter updated car Fuel Type: "
@@ -257,35 +271,37 @@ def delete_car():
             if len(rental_cars) != 0:
                 show_list_of_cars()
 
-                try:
-                    delete_car_id = int(input("Enter car index to Delete: "))
-                    car_found = False
+                delete_car_id = get_user_input(
+                    "Enter car index to Delete: ", input_type=int
+                )
+                car_found = False
 
-                    for car in rental_cars:
-                        if car["car_id"] == delete_car_id:
-                            car_found = True
+                for car in rental_cars:
+                    if car["car_id"] == delete_car_id:
+                        car_found = True
 
-                            # CONFIRMATION DELETE DATA
+                        # CONFIRMATION DELETE DATA
+                        user_confirmation = confirmation_page()
+
+                        while user_confirmation not in ["1", "2"]:
+                            print("Invalid choice. Please enter 1 or 2.")
                             user_confirmation = confirmation_page()
 
-                            if user_confirmation == "1":
-                                rental_cars.remove(car)
-                                print("\n\nCar successfully deleted")
-                                show_list_of_cars()  # Show the updated list of cars
-                                break
-                            elif user_confirmation == "2":
-                                print("Cancel deletion")
-                                return
-                            else:
-                                print("Invalid choice")
+                        if user_confirmation == "1":
+                            rental_cars.remove(car)
+                            print("\n\nCar successfully deleted")
+                            show_list_of_cars()  # Show the updated list of cars
+                            break
+                        elif user_confirmation == "2":
+                            print("Cancel deletion")
+                            return
+                        else:
+                            print("Invalid choice")
 
-                    if not car_found:
-                        print("The data you are looking for does not exist")
-                except ValueError:
-                    print("Invalid car index. Please enter a valid car index.")
-            else:
-                print("No data in rental car")
-                break  # Exit the loop if there are no cars left
+                    break  # Exit the loop if the car is found
+
+            if not car_found:
+                print("The data you are looking for does not exist")
 
         elif user_input == "2":
             return
@@ -296,9 +312,10 @@ def delete_car():
 ## OTHER FEATURES
 def others_menu():
     while True:
-        print("==== Others Menu ====")
+        print("\t\t==== Others Menu ====")
         print(
-            """ 1. Sort Cars
+            """ 
+                1. Sort Cars
                 2. Car Maintenance
                 3. Back to Menu
             """
@@ -347,9 +364,3 @@ def main_menu():
 
 if __name__ == "__main__":
     main_menu()
-
-
-## TO DO LIST:
-# Revision on code (improvement, check for errors)
-# Add more features of needed
-# create user side to rent a car
